@@ -181,6 +181,53 @@
   </div>
 </template>
 
+<script>
+  var WIZARD_PROPORTION = 1.337;
+  var wizardWidth = 70;
+  var wizardSpeed = 3;
+
+  var fireballSize = 22;
+
+  /**
+   *
+   * @description Определяет скорость полёта огненного шара. Если влево - 5, иначе 2.
+   * @param {Boolean} left - направление.
+   * @returns {Number} - Скорость полёта.
+   */
+  var getFireballSpeed = function(left){
+    return left ? 5 : 2;
+  }
+  
+  /**
+   *
+   * @description Определяет высоту мага, основываясь на его ширине и константе.
+   * @param {Number} wizardWidth - ширина мага.
+   * @returns {Number} - высота мага.
+   */
+  var getWizardHeight = function(wizardWidth){
+    return WIZARD_PROPORTION * wizardWidth;
+  }
+
+  /**
+   *
+   * @description Определяет Х координату мага на игровом поле(по середине).
+   * @param {Number} width - ширина игрового поля.
+   * @returns {Number} - Х координата.
+   */
+  function getWizardX(width){
+    return  width / 2 - wizardWidth / 2;
+  }
+  
+  /**
+   *
+   * @description Определяет Y координату мага на игровом поле(2/3 над землёй).
+   * @param {Number} height - высота игрового поля.
+   * @returns {Number} - Y координата.
+   */
+  function getWizardY(height){
+    return height - (height / 3 * 2);
+  }
+</script>
 <script src="js/game.js"></script>
 
 </body>
