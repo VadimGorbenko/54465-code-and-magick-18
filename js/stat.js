@@ -7,8 +7,8 @@ var MODAL_HEIGHT = 270;
 var MODAL_PADDING = 20;
 var MODAL_COLOR = 'white';
 
-var MODAL_SHADDOW_OFFSET_X = 10;
-var MODAL_SHADDOW_OFFSET_Y = 10;
+var MODAL_SHADOW_OFFSET_X = 10;
+var MODAL_SHADOW_OFFSET_Y = 10;
 var MODAL_SHADOW_COLOR = 'rgba(0, 0, 0, 0.7)';
 
 var TEXT_X = MODAL_X + MODAL_PADDING;
@@ -27,6 +27,7 @@ var STATS_BARS_MARGIN_SIDES = 10;
  * @param {String[]} names - массив имён игроков.
  * @param {Number[]} times - массив миллисекунд, затраченных на прохождение игры.
  */
+// eslint-disable-next-line no-unused-vars
 function renderStatistics(ctx, names, times) {
   drawModal(ctx);
   drawTitle(ctx, ['Ура, вы победили!', 'Список результатов:']);
@@ -41,7 +42,7 @@ function renderStatistics(ctx, names, times) {
 function drawModal(ctx) {
   // Рисуем "тень"
   ctx.fillStyle = MODAL_SHADOW_COLOR;
-  ctx.fillRect(MODAL_X + MODAL_SHADDOW_OFFSET_X, MODAL_Y + MODAL_SHADDOW_OFFSET_Y, MODAL_WIDTH, MODAL_HEIGHT);
+  ctx.fillRect(MODAL_X + MODAL_SHADOW_OFFSET_X, MODAL_Y + MODAL_SHADOW_OFFSET_Y, MODAL_WIDTH, MODAL_HEIGHT);
   // Рисуем модалку
   ctx.fillStyle = MODAL_COLOR;
   ctx.fillRect(MODAL_X, MODAL_Y, MODAL_WIDTH, MODAL_HEIGHT);
