@@ -1,5 +1,8 @@
 'use strict';
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 /**
  * @description Создаёт нового волшебника (new Wizard)
  * @class
@@ -144,3 +147,91 @@ function drawWizards(wizards) {
 }
 
 openSetup();
+
+/**
+ * Поиск первого элемента по заданному селектору.
+ * @param {String} selector - css совместимый селектор.
+ * @return {HTMLElement};
+ */
+function $(selector) {
+  return document.querySelector(selector);
+}
+
+var setup = $('.setup');
+var setupOpen = $('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
+
+$('.setup-wizard-form').addEventListener('click', function (evt) {
+  var COAT_COLORS = [
+    'rgb(101, 137, 164)',
+    'rgb(241, 43, 107)',
+    'rgb(146, 100, 161)',
+    'rgb(56, 159, 117)',
+    'rgb(215, 210, 55)',
+    'rgb(0, 0, 0)'
+  ];
+  var EYE_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+  var FIRE_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+
+  var setupForm = $('.setup-wizard-form');
+  var coat = setupForm.querySelector('[name="coat-color"]');
+  var eyes = setupForm.querySelector('[name="eyes-color"]');
+  var fire = setupForm.querySelector('[name="fireball-color"]');
+  var target = evt.target;
+
+  var newColor;
+
+  if (target.classList.contains('wizard-coat')) {
+    newColor = COAT_COLORS[Math.round(Math.random() * COAT_COLORS.length)];
+    target.style.fill = newColor;
+    coat.value = newColor;
+  }
+
+  if (target.classList.contains('wizard-eyes')) {
+    newColor = EYE_COLORS[Math.round(Math.random() * EYE_COLORS.length)];
+    target.style.fill = newColor;
+    eyes.value = newColor;
+  }
+
+  if (target.classList.contains('setup-fireball')) {
+    newColor = FIRE_COLORS[Math.round(Math.random() * FIRE_COLORS.length)];
+    target.parentElement.style.backgroundColor = newColor;
+    fire.value = newColor;
+  }
+});
