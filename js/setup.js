@@ -109,6 +109,8 @@ function openSetup() {
 
   drawWizards(wizards);
   showBlock('.setup-similar');
+  // закрытие окна настроек по ESC
+  document.addEventListener('keydown', onPopupEscPress);
 }
 
 /**
@@ -143,10 +145,9 @@ function drawWizards(wizards) {
     fragment.appendChild(wizardItem);
   });
 
+  document.querySelector('.setup-similar-list').innerHTML = '';
   document.querySelector('.setup-similar-list').appendChild(fragment);
 }
-
-openSetup();
 
 /**
  * Поиск первого элемента по заданному селектору.
@@ -160,6 +161,7 @@ function $(selector) {
 var setup = $('.setup');
 var setupOpen = $('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
+var setupNameInput = setup.querySelector('.setup-user-name');
 
 var onPopupEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
@@ -167,36 +169,46 @@ var onPopupEscPress = function (evt) {
   }
 };
 
-var openPopup = function () {
-  setup.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
-};
-
 var closePopup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
+// Открытие окна настроек по кнопке
 setupOpen.addEventListener('click', function () {
-  openPopup();
+  openSetup();
 });
 
+// Открытие окна настроек по Enter
 setupOpen.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    openPopup();
+    openSetup();
   }
 });
 
+// Закрытие окна настроек по клику на крестик
 setupClose.addEventListener('click', function () {
   closePopup();
 });
 
+// Закрытие окна настроек по клику на крестик по Enter
 setupClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopup();
   }
 });
 
+// Отмена закрытия окна настроек по Esc когда поле ввода имени в фокусе
+setupNameInput.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onPopupEscPress);
+});
+
+// Закрытие окна настроек по Esc когда поле ввода имени теряет фокус
+setupNameInput.addEventListener('blur', function () {
+  document.addEventListener('keydown', onPopupEscPress);
+});
+
+// Обработчик клика на элементы формы через делигирование.
 $('.setup-wizard-form').addEventListener('click', function (evt) {
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
@@ -217,18 +229,21 @@ $('.setup-wizard-form').addEventListener('click', function (evt) {
 
   var newColor;
 
+  // Смена цвета плаща по клику на плащ
   if (target.classList.contains('wizard-coat')) {
     newColor = COAT_COLORS[Math.round(Math.random() * COAT_COLORS.length)];
     target.style.fill = newColor;
     coat.value = newColor;
   }
 
+  // Смена цвета глаз по клику на глаза
   if (target.classList.contains('wizard-eyes')) {
     newColor = EYE_COLORS[Math.round(Math.random() * EYE_COLORS.length)];
     target.style.fill = newColor;
     eyes.value = newColor;
   }
 
+  // Смена цвета огня по клику на огонь
   if (target.classList.contains('setup-fireball')) {
     newColor = FIRE_COLORS[Math.round(Math.random() * FIRE_COLORS.length)];
     target.parentElement.style.backgroundColor = newColor;
